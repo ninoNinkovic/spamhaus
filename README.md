@@ -1,42 +1,30 @@
-## Spamhaus DROP List ##
-A shell script that grabs the latest Spamhaus DROP & EDROP Lists and adds them to iptables. We use this script (among other tools) on our Debian web server & Ubuntu proxy server at [AppThemes](http://www.appthemes.com/) to cut down on spam and other malicious activity.
+[Spamhaus](https://www.spamhaus.org/) DROP/EDROP Lists for `iptables`
+---
+A shell script that grabs the latest [Spamhaus DROP and EDROP Lists](https://www.spamhaus.org/drop/), then adds them to `iptables`.
 
-## Usage ##
-Place the script somewhere on your server.
-
-<pre>
-# find a nice home
-cd /home/YOUR-USERNAME/bin/
-
-# create the file and paste
-vim spamhaus.sh
-
-# make it executable
+### Installation
+```
+# Download the script.
+curl -LO https://github.com/phracker/spamhaus/raw/master/spamhaus.sh
+# Make it executable.
 chmod +x spamhaus.sh
-
-# set it loose
+# Execute it.
 sudo ./spamhaus.sh
-
-# confirm the rules have been added
+# Confirm the rules have been added.
 sudo iptables -L Spamhaus -n
-</pre>
+```
 
-## Automatic Updating ##
-In order for the list to automatically update each day, you'll need to setup a cron job with crontab.
-<pre>
-# fire up the crontab (no sudo)
-crontab -e
+### Automatic Updating
+In order for the list to automatically update each day, you'll need to set up a cron job using `crontab -e`.
 
-# run the script every day at 3am
-0 3 * * * /home/YOUR-USERNAME/bin/spamhaus.sh
-</pre>
+This example rule will execute the script once daily at 3am.
+```
+0 3 * * * /path/to/spamhaus.sh
+```
 
-
-## Troubleshooting ##
+### Troubleshooting
 If you need to remove all the Spamhaus rules, run the following:
-<pre>
+```
 sudo iptables -F Spamhaus
-</pre>
-<pre>
 sudo iptables -F SpamhausAct
-</pre>
+```
